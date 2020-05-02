@@ -24,9 +24,9 @@ namespace CasaDoCodigo.Controllers
             this.itemPedidoRepository = itemPedidoRepository;
         }
 
-        public IActionResult Carrossel()
+        public async Task<IActionResult> Carrossel()
         {
-            return View(produtoRepository.GetProdutos());
+            return View(await produtoRepository.GetProdutos());
         }
 
         public async Task<IActionResult> Carrinho(string codigo)
@@ -73,9 +73,16 @@ namespace CasaDoCodigo.Controllers
         }
 
 
-        public IActionResult BuscaDeProdutos()
+        public async Task<IActionResult> BuscaDeProdutos(string pesquisa = "")
         {
-            return View(produtoRepository.GetProdutos());
+            BuscaDeProdutosViewModel model = new BuscaDeProdutosViewModel() { Pequisa = pesquisa };
+
+            if (String.IsNullOrWhiteSpace(pesquisa))
+                model.Produtos = await produtoRepository.GetProdutos();
+            else
+                model.Produtos = await produtoRepository.GetProdutos(pesquisa);
+
+            return View(model);
         }
 
     }

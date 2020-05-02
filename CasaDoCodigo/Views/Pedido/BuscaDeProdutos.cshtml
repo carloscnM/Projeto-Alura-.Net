@@ -1,11 +1,11 @@
-﻿@model List<Produto>;
+﻿@model BuscaDeProdutosViewModel;
 
 @{
     ViewData["Title"] = "BuscaDeProdutos";
 
     const int TAMANHO_PAGINA = 4;
 
-    var categorias = Model.Select(p => p.Categoria).Distinct();
+    var categorias = Model.Produtos.Select(p => p.Categoria).Distinct();
 }
 
 <div class="container">
@@ -14,12 +14,14 @@
             <h2>Buscar produtos</h2>
             <div id="custom-search-input">
                 <div class="input-group col-md-12">
-                    <input type="text" name="pesquisa" class="form-control input-lg" placeholder="categoria ou produto" id="Pesquisa" value="" />
-                    <span class="input-group-btn">
-                        <button class="btn btn-info btn-lg" type="submit">
-                            <i class="glyphicon glyphicon-search"></i>
-                        </button>
-                    </span>
+                    <form asp-action="BuscaDeProdutos">
+                        <input type="text" name="pesquisa" class="form-control input-lg" placeholder="categoria ou produto" id="Pesquisa" asp-for="@Model.Pequisa" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-info btn-lg" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </span>
+                    </form>
                 </div>
             </div>
         </div>
@@ -36,7 +38,7 @@
         <div class="carousel-inner" role="listbox">
 
             @{
-                var produtosDaCategoria = Model.Where(p => p.Categoria.Id == categoria.Id).ToList();
+                var produtosDaCategoria = Model.Produtos.Where(p => p.Categoria.Id == categoria.Id).ToList();
 
                 int paginas = (int)Math.Ceiling((double)produtosDaCategoria.Count() / TAMANHO_PAGINA);
 
@@ -92,6 +94,11 @@
 
     </div>
 
+}
+
+@if (Model.Produtos.Count() == 0)
+{
+    <h3>Nenhum produto encontrado</h3>
 }
 
 
