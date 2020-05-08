@@ -10,4 +10,4 @@ by Carlos Mario
 
 ## Demostração
 
-![](_demo/BuscaDeProdutos - Casa do Código.gif)
+![](_casadocodigo.gif)
